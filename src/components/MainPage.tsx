@@ -487,36 +487,38 @@ export default function MainPage({ profile, authUser, onEditProfile, onReset }: 
     }, 1000);
 
     let lastAcceleration = { x: 0, y: 0, z: 0 };
-    let lastUpdate = 0;
-    const threshold = 1.8;
-    let lastStepTime = 0;
+let lastUpdate = 0;
+const threshold = 4.5;
+let lastStepTime = 0;
 
-    const handleMotionEvent = (event: DeviceMotionEvent) => {
-      const acc = event.accelerationIncludingGravity || event.acceleration;
-      if (!acc) return;
+const handleMotionEvent = (event: DeviceMotionEvent) => {
+  const acc = event.accelerationIncludingGravity || event.acceleration;
+  if (!acc) return;
 
-      const currentTime = Date.now();
-      if ((currentTime - lastUpdate) > 100) {
-        lastUpdate = currentTime;
+  const currentTime = Date.now();
+  if ((currentTime - lastUpdate) > 100) {
+    lastUpdate = currentTime;
 
-        const x = acc.x || 0;
-        const y = acc.y || 0;
-        const z = acc.z || 0;
+    const x = acc.x || 0;
+    const y = acc.y || 0;
+    const z = acc.z || 0;
 
-        const magnitude = Math.sqrt(x * x + y * y + z * z);
-        const delta = Math.abs(magnitude - 9.8);
+    const magnitude = Math.sqrt(x * x + y * y + z * z);
+    const delta = Math.abs(magnitude - 9.8);
 
-        if (delta > threshold && (currentTime - lastStepTime) > 360) {
-          lastStepTime = currentTime;
-          setSteps(prev => {
-            const nextSteps = prev + 1;
-            setCaloriesBurned(parseFloat((nextSteps * 0.04).toFixed(2)));
-            return nextSteps;
-          });
-        }
-        lastAcceleration = { x, y, z };
-      }
-    };
+    if (delta > threshold && (currentTime - lastStepTime) > 900) {
+      lastStepTime = currentTime;
+
+      setSteps(prev => {
+        const nextSteps = prev + 1;
+        setCaloriesBurned(parseFloat((nextSteps * 0.04).toFixed(2)));
+        return nextSteps;
+      });
+    }
+
+    lastAcceleration = { x, y, z };
+  }
+};
 
     if (typeof window !== 'undefined') {
       window.addEventListener('devicemotion', handleMotionEvent, true);
