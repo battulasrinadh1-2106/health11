@@ -14,9 +14,22 @@ import HealthMateCompanionWidget from './components/HealthMateCompanionWidget';
 type AppStep = 'splash' | 'auth' | 'setup' | 'main';
 
 export default function App() {
-  const [step, setStep] = useState<AppStep>('splash');
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [authUser, setAuthUser] = useState<any | null>(null);
+  const [step, setStep] = useState<AppStep>('main');
+
+const [profile, setProfile] = useState<UserProfile | null>({
+  age: 25,
+  gender: 'male',
+  height: 170,
+  weight: 70,
+  activityLevel: 'moderate'
+});
+
+const [authUser, setAuthUser] = useState<any | null>({
+  _id: 'test-user',
+  name: 'Test User',
+  email: 'test@test.com'
+});
+  
 
   const [initialIsSignup, setInitialIsSignup] = useState<boolean>(false);
 
