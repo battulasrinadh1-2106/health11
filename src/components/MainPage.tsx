@@ -488,7 +488,7 @@ export default function MainPage({ profile, authUser, onEditProfile, onReset }: 
 
     let lastAcceleration = { x: 0, y: 0, z: 0 };
 let lastUpdate = 0;
-const threshold = 4.5;
+const threshold = 3.0;
 let lastStepTime = 0;
 
 const handleMotionEvent = (event: DeviceMotionEvent) => {
@@ -506,7 +506,7 @@ const handleMotionEvent = (event: DeviceMotionEvent) => {
     const magnitude = Math.sqrt(x * x + y * y + z * z);
     const delta = Math.abs(magnitude - 9.8);
 
-    if (delta > threshold && (currentTime - lastStepTime) > 900) {
+    if (delta > threshold && (currentTime - lastStepTime) > 500) {
       lastStepTime = currentTime;
 
       setSteps(prev => {
